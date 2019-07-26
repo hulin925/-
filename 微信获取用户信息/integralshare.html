@@ -1,0 +1,493 @@
+	<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+	<title>微信授权注册</title>
+	<!-- eye -->
+	<link rel="stylesheet" href="https://at.alicdn.com/t/font_1275972_e45cxlu8i47.css">
+	<!--//pc禁止-->
+    <link rel="stylesheet" href="https://at.alicdn.com/t/font_1246445_azvinwbp6fp.css">
+	<style>
+		html{
+			font-size:16px;
+		}
+		body{
+			margin:2rem;
+			background-color:#fff;
+		}
+		.wrap{
+			width:100%;
+			padding:1rem 0;
+			text-align:center;
+			border-bottom:1px solid #ddd;
+		}
+		.wrap span{
+			font-size:1.3rem;
+			line-height:3rem;
+		}	
+		h1{
+			width:4rem;
+			height:4rem;
+			margin:0 auto;
+		}
+		img{
+			width:100%;
+			height:100%;
+		}
+		.content{
+			margin-bottom:1rem;
+		}
+		.title{
+			font-size:0.9rem;
+			line-height:2rem;
+			font-weight:bold;
+			margin-top:1rem;
+			color:#555;
+		}
+		.open{
+			font-size:0.9rem;
+			color:#989898;
+		}
+		.open i{
+			display: inline-block;
+			width:0.6rem;
+			height:0.6rem;
+			border-radius: 1rem;
+			background: #c0c0c0;
+		}
+		.register{
+			position: relative;
+			/*display: none;*/
+		}
+		.register h3{
+			width:13rem;
+			height:2.4rem;
+			margin:0.5rem 0;
+			border:1px solid red;
+			outline:none;
+			font-size:0.9rem;
+			display: inline-block;
+			position:relative;
+			padding:0 2rem;
+			text-align:left;
+			display: none;
+		}
+		.register h3 i{
+			position:absolute;
+			color:red;
+			left:1rem;
+			top:0.7rem;
+		}
+		.register h3 strong{
+			font-weight: normal;
+			line-height: 2.4rem;
+			padding-left:1rem;
+			color:red;
+		}
+		.register p{
+			background-color: #1aac19;
+			color:#fff;
+			line-height:2.5rem;
+			border-radius: 0.3rem;
+		}
+
+		input{
+			width:80%;
+			height:2.4rem;
+			padding:0 1rem;
+			border:1px solid #ddd;
+			outline:none;
+			font-size:0.9rem;
+		}
+		input:focus{
+			border-color:#aebdff;
+		}
+		.success{
+			position: absolute;
+			top:0;
+			left:0;
+			right:0;
+			bottom:0;
+			z-index: 99;
+			display: none;
+		}
+		.success span{
+			position: absolute;
+			padding:0.5rem 1rem;
+			background-color:rgba(0,0,0,0.4);
+			top:45%;
+			left:50%;
+			transform: translate(-50%,-50%);
+			color:#fff;
+			text-align:center;
+			line-height:1.5rem;
+		}
+		#registerPush{
+			background-color: #1aac19;
+			color:#fff;
+			line-height:2.5rem;
+			border-radius: 0.3rem;
+			text-align:center;
+			margin-top:4rem;
+		}
+		#registerPush:active{
+			background: #7cd17b;
+		}
+
+		#register{
+			text-align:center;
+		}
+		.clearfix{
+		  zoom:1;
+		}
+		.clearfix:after{
+		  content:".";
+		  display:block;
+		  visibility:hidden;
+		  height:0;
+		  clear:both;
+		}
+		.padd{
+			/*margin-left:1rem;*/
+		}
+		.padd div{
+			width:100%;
+			margin:1rem 0 1rem 1rem;
+		}
+		.register .yanz{
+			width:90%;
+		}
+		#code{
+			width:30%;
+			float:left;
+		}
+		.yanz .getCode{
+			float:right;
+			width:50%;
+			height:2.52rem;
+			color:#fff;
+			line-height:2.52rem;
+			text-align:center;
+			background: #73dc6b;
+			margin:0;
+		}
+
+		.yanz .getCodes{
+			float:right;
+			width:50%;
+			height:2.52rem;
+			color:#fff;
+			line-height:2.52rem;
+			text-align:center;
+			background: #73dc6b;
+			margin:0;
+			display: none;
+			background: #ccc;
+
+		}
+		.already{
+			position: absolute;
+			top:0;
+			left:0;
+			right:0;
+			bottom:0;
+			z-index: 999999;
+			display: none;
+			background: #fff;
+		}
+		.already span{
+			position:absolute;
+			top:45%;
+			left:15%;
+			width:70%;
+			text-align:center;
+			line-height:2rem;
+		}
+		.positionEye{
+			position:relative;
+		}
+		.positionEye span{
+			position:absolute;
+			right:12%;
+			top:0.5rem;
+			z-index:999;
+		}
+		#disNOw{
+			width:70%;
+			margin-left:1rem;
+		}
+	</style>
+</head>
+<body>
+	<div class="already">
+		<span>你已经授权注册过财富积分，即将跳转到财富积分...</span>
+	</div>
+	<div class="success">
+		<span>注册成功,即将跳转到财富积分！</span>
+	</div>
+	
+	<!-- <div class="box">
+		<div class="wrap">
+			<h1>
+				<img src="https://web.3fgj.com/imgVue/lawyer.png" alt="">
+			</h1>
+			<span>芯汇法务云</span>
+		</div>
+		<div class="content">
+			<div class="title">注册后应用将获得以下权限</div>
+			<div class="open">
+				<i></i>
+				<span>获得你的公开信息（昵称、头像）</span>
+			</div>
+		</div>
+		<p id='registerPush'>微信授权注册</p>
+	</div> -->
+	
+	<div class="register">
+		<div class="padd">
+			<div>
+				<input type="text" id="phone" maxlength="11" placeholder="请输入手机号"/>
+			</div>
+			<div class="yanz clearfix">
+				<input type="number" id="code" maxlength="5" placeholder="输入验证码"/>
+				<div class="getCode">获取验证码</div>
+				<div class="getCodes"></div>
+			</div>
+			<!-- <div class="positionEye">
+				<input type="password" id="password" maxlength="18" placeholder="6-18位数字&字母组合登录密码"/>
+				<span href="#" id="passwordeye" class="invisible bgImg"><i class="iconfont icon-iconset0207"></i></span>
+			</div> -->
+			<h3 id='disNOw'>
+				<i class="iconfont icon-msnui-forbid"></i>
+	             <strong id='Tips'></strong>
+			</h3>
+		</div>
+		<p id='register'>注册</p>
+	</div>	
+</body>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="https://pv.sohu.com/cityjson?ie=utf-8"></script>
+<script>
+
+	function getQuery(name) {//获取地址栏信息
+	    var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+	    var r = window.location.search.substr(1).match(reg);
+	    if (r != null) {
+      		return unescape(r[2]);
+	    }
+	    return null;
+	  };
+
+	  var fxUid=getQuery('fxUid');
+
+	var dataList={};//存储用户信息 
+  	if (!getQuery('code')) {//获取code snsapi_base 静默 snsapi_userinfo弹窗
+      let authParams = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx9aa3788f0433569c&redirect_uri=${encodeURIComponent(window.location.href)}&response_type=code&scope=snsapi_userinfo#wechat_redirect`;
+      window.location.href = authParams
+    } else {
+      var code = getQuery('code');
+      var fd = new FormData();
+      fd.append("code", code);
+      $.ajax({
+	        url:"https://xhfwy3.sanhedao.com.cn/public/index.php/uapi/v4/home/getopenid",
+	        type:'post',
+	        processData: false,
+        	contentType: false,
+	        data:fd,
+	        success:function(data){
+	        	var data=JSON.parse(data);
+	        	if(Number(data.code)==10000){
+	        		dataList=data.data;
+	        		let unionid=dataList.unionid;
+	        		var openid=dataList.openid;
+	        		let options=new FormData();
+	        		options.append('unionid',unionid);
+	        		options.append('openid',openid);
+	        		// console.log(openid)
+	        		// return;
+	        		$.ajax({//判断用户是否已经授权，做相应的处理
+	        			url:"https://cfjf.sanhedao.com.cn/Api/Index/index/do/User/ac/zdlogin",
+	        			type:'post',
+	        			processData:false,
+	        			contentType:false,
+	        			data:options,
+	        			success:function(data){
+	        				if(data.code==10000){
+	        					var userInfo=data.data;
+	        					$('.already').css('display','block')
+	        					setTimeout(()=>{
+	        						window.location.href="https://cfjf.sanhedao.com.cn/Public/Admin/html/login1.html?uid="+userInfo.uid+"&phone="+userInfo.phone+"&name="+userInfo.name+"&oP="+openid+"&fxUid="+fxUid;
+	        					},1000)
+	        				}else{
+	        					$('.already').css('display','none');
+	        				}
+	        			}
+	        		})
+	        	}
+	        }
+	    })
+        
+      }
+	
+
+
+		// $('#registerPush').click(function(){
+		// 	$('.box').css('display','none');
+		// 	$('.register').css('display','block');
+		// })
+
+	  //点击显示
+		var passwordeye = $('#passwordeye');
+	   var showPwd = $("#password");
+	   passwordeye.off('click').on('click',function(){
+       if(passwordeye.hasClass('invisible')){
+           passwordeye.removeClass('invisible').addClass('visible');//密码可见
+           showPwd.prop('type','text');
+       }else{
+           passwordeye.removeClass('visible').addClass('invisible');//密码不可见
+           showPwd.prop('type','password');
+       };
+       });
+
+	 
+
+
+      function getCity(name){//获取省市
+        if(name.includes('省')){
+          return {
+            province:name.substring(0,name.indexOf('省')+1),
+            city:name.substring(name.indexOf('省')+1)
+          }
+        }else{
+          return {
+            province:name,
+            city:name
+          };
+        }
+      }
+
+
+	var objCity=getCity(returnCitySN.cname);//获取省市
+
+
+      function codeVerification(phone){//判断手机号
+		    let phoneCodeVerification = /^[1][3,4,5,7,8][0-9]{9}$/;
+		    return phoneCodeVerification.test(phone);
+		}
+
+
+		$('.getCode').click(function(){//获取验证码
+			let value = $('#phone').val();
+			if(value == ''){
+		  		$('#Tips').html('手机号不能为空');
+		  		$('#disNOw').css("display","inline-block");
+		  		return;
+		  	}else if(!codeVerification(value)){
+		  		$('#Tips').html('您输入的手机号码不正确');
+		  		$('#disNOw').css("display","inline-block");
+		  		return;
+		  	}else{
+		  		$('#disNOw').css("display","none");
+		  	}
+			let fd = new FormData();
+		      fd.append("type", 'register');
+		      fd.append("phone", value);
+		      $.ajax({
+			        url:"https://cfjf.sanhedao.com.cn/Api/Index/index/do/User/ac/getvalidate",
+			        type:'post',
+			        processData: false,
+		        	contentType: false,
+			        data:fd,
+			        success:function(data){
+			        	if(Number(data.code)==10000){
+			        		var time = 60;
+			        		var timer = setInterval(function() {
+							    time--;
+							   if (time == 0) {
+							    clearInterval(timer);
+							    $('.getCodes').css('display','none');
+							    $('.getCode').css('display','block');
+							   } else {
+							   	$('.getCode').css('display','none');
+			        			$('.getCodes').css('display','block');
+							    $('.getCodes').html(time+'S获取验证码');
+							   }
+							  }, 1000);
+			        	}
+			        }
+			    })
+		})
+
+
+	   $('#register').on('click',function(){//注册
+	  	var value = $('#phone').val();
+	  	var password = $('#password').val();
+	  	var code = $('#code').val();
+	  	if(value == ''){
+	  		$('#Tips').html('手机号不能为空');
+	  		$('#disNOw').css("display","inline-block");
+	  		return;
+	  	}else if(!codeVerification(value)){
+	  		$('#Tips').html('您输入的手机号码不正确');
+	  		$('#disNOw').css("display","inline-block");
+	  		return;
+	  	}else if(code == ''){
+	  		$('#Tips').html('验证码不能为空');
+	  		$('#disNOw').css("display","inline-block");
+	  		return;
+	  	}else if(password == ''){
+	  		$('#Tips').html('密码不能为空');
+	  		$('#disNOw').css("display","inline-block");
+	  		return;
+	  	}else{
+	  		$('#disNOw').css("display","none");
+	          let options = new FormData();
+		      options.append("uid", getQuery('fxUid'));
+		      options.append("phone", value);
+		      options.append("phone_code", code);
+		      // options.append("password", password);
+		      options.append("name", dataList.nickname);
+		      options.append("province", objCity.province);
+		      options.append("city", objCity.city);
+		      options.append("openid", dataList.openid);
+		      options.append("unionid", dataList.unionid);
+		      $.ajax({
+			        url:"https://cfjf.sanhedao.com.cn/Api/Index/index/do/Userinfo/ac/wxshareregister",
+			        type:'post',
+			        processData: false,
+        			contentType: false,
+			        data:options,
+			        success:function(data){
+			        	if(Number(data.code)=="10000"){
+			        		var dataPush=data.data;
+			        		$('.success').css('display','block');
+			        		setTimeout(()=>{
+			        			$('.success').css('display','none');
+			        			window.location.href="https://cfjf.sanhedao.com.cn/Public/Admin/html/login1.html?uid="+dataPush.uid+"&phone="+dataPush.phone+"&name="+dataPush.name;
+			        		},3000)
+			        	}else if(Number(data.code)=='10006'){
+			        		$('#Tips').html(data.msg);
+	  						$('#disNOw').css("display","inline-block");
+			        	}else if(Number(data.code)=='10001'){
+			        		$('#Tips').html(data.msg);
+	  						$('#disNOw').css("display","inline-block");
+			        	}else if(Number(data.code)=='10009'){
+			        		$('#Tips').html(data.msg);
+	  						$('#disNOw').css("display","inline-block");
+			        	}else if(Number(data.code)=='10008'){
+			        		$('#Tips').html(data.msg);
+	  						$('#disNOw').css("display","inline-block");
+			        	}else{
+			        		$('#Tips').html(data.msg);
+	  						$('#disNOw').css("display","inline-block");
+			        	}
+			        }
+			    })
+
+	  	}
+	  })
+        
+
+</script>
+</html>
