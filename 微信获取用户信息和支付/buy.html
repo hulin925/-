@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="IE=8" />
+    <title>合伙人积分</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <style>
+        .content {
+            width: 94%;
+            margin: 0 auto;
+            /*padding-bottom: 80px;*/
+        }
+
+        h3,
+        h2,
+        .buyBox .score p,
+        .title,
+        .payway div {
+            font-family: "pingfangBold" !important;
+        }
+
+        .box {
+            height: 160px;
+            background: url(../image/bg2.png) center no-repeat;
+            background-size: cover;
+            border-radius: 5px;
+            padding: 3% 5%;
+        }
+
+        .box div,
+        .myIntegrate {
+            font-family: "pingfangBold" !important;
+        }
+
+        .box div:nth-child(1) {
+            color: #AB7E3A;
+            font-size: 16px;
+        }
+
+        .box div:last-child {
+            color: #AB7E3A;
+            font-size: 14px;
+        }
+
+        .box .total .number {
+            font-size: 30px;
+            color: #AB7E3A;
+        }
+
+        .box .total span {
+            font-size: 13px;
+        }
+
+        .box .total span.buy {
+            width: 50px;
+            text-align: center;
+            color: #fff;
+            font-size: 12px;
+            background: #AB7E3A;
+            border-radius: 1rem;
+            margin-left: 55px;
+        }
+
+        .box .progress {
+            width: 100%;
+            height: 10px;
+            background: #E3C277;
+            border-radius: 5px;
+            margin: 5% 0;
+        }
+
+        .box .progress .curPro {
+            width: 90%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(230, 147, 74, 1), rgba(230, 147, 74, 1), rgba(230, 212, 164, 1), rgba(235, 217, 168, 1), rgba(236, 210, 147, 1), rgba(227, 199, 134, 1), rgba(227, 194, 117, 1));
+            border-radius: 5px;
+        }
+
+        h2 {
+            color: #fff;
+            font-size: 18px;
+            margin: 6% 0;
+        }
+
+        .buyBox {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .buyBox .score {
+            width: 30%;
+            margin-right: 5%;
+            text-align: center;
+            border: 1px solid #6D6D6D;
+            margin-bottom: 5%;
+            border-radius: 5px;
+            padding: 3% 0;
+        }
+
+        .buyBox .score p {
+            color: #666;
+        }
+
+        .buyBox .score.active p {
+            color: #AB7E3A
+        }
+
+        .buyBox .score:nth-child(3n) {
+            margin-right: 0;
+        }
+
+        .buyBox .score p:first-child {
+            font-size: 18px;
+        }
+
+        .buyBox .score p:last-child {
+            font-size: 12px;
+        }
+
+        input#score {
+            border: 1px solid #666;
+            border-radius: 5px;
+            padding-left: 3%;
+            color: #fff;
+        }
+
+        .payBox {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: #2B2D34;
+            z-index: 99;
+            padding: 0 3%;
+            padding-bottom: 8%;
+            display: none;
+        }
+
+        .title {
+            text-align: center;
+            padding: 4% 0;
+            color: #fff;
+            font-size: 16px;
+            position: relative;
+            border-bottom: 1px solid #666;
+        }
+
+        .title img {
+            width: 14px;
+            position: absolute;
+            left: 0;
+            top: 40%;
+        }
+
+        .payway {
+            padding: 5% 0;
+            border-bottom: 1px solid #666;
+            display: flex;
+            align-items: center;
+        }
+
+        .payway div {
+            color: #fff;
+        }
+
+        .payway div:last-child {
+            display: flex;
+            align-items: center;
+        }
+
+        .payway div span {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #666;
+        }
+
+        .payway.active div span {
+            background: #4494FE;
+            border: 2px solid #fff;
+        }
+
+        .payway img {
+            width: 30px;
+        }
+
+        /* button {
+            width: 100%;
+            border-radius: 3px;
+            background: #4494FE;
+            color: #fff;
+            margin-top: 10%;
+            height: 50px
+        } */
+
+        .btn-pay {
+            height: 3.0rem;
+            margin: 1rem 0 0 0;
+            padding: 0.25rem 3%;
+        }
+
+        .btn-pay button {
+            width: 100%;
+            height: 100%;
+            background: #4494FE;
+            color: #fff;
+        }
+
+        .payBox button {
+            color: #fff;
+            height: 2.25rem;
+            margin-top: 2rem;
+            background-color: #4494FE;
+            width: 100%;
+        }
+
+        .alertBox {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 999;
+            display: none;
+        }
+
+        .shadow {
+            width: 100%;
+            height: 100%;
+            -webkit-filter: blur(10px);
+            -moz-filter: blur(10px);
+            -o-filter: blur(10px);
+            -ms-filter: blur(10px);
+            filter: blur(10px);
+            background: #000;
+            opacity: 0.7;
+            z-index: 9999;
+        }
+
+        .contBox {
+            background: #fff;
+            z-index: 99;
+            width: 90%;
+            left: 5%;
+            position: absolute;
+            height: 256px;
+            bottom: 35%;
+            border-radius: 14px;
+            overflow: scroll;
+        }
+
+        #cont {
+            color: #666;
+            font-size: 14px;
+            padding: 8% 5% 70px;
+            line-height: 2;
+        }
+
+        #title {
+            font-size: 18px;
+            color: #333;
+            text-align: center;
+            padding: 4% 0;
+        }
+
+        .btns {
+            padding: 4% 0;
+            box-shadow: 0px -2px 2px -1px rgba(98, 146, 255, 0.38);
+            position: fixed;
+            bottom: 35%;
+            width: 90%;
+            /*margin: 0 auto;*/
+            background: #fff;
+            z-index: 99999;
+        }
+
+        .btns div {
+            text-align: center;
+        }
+
+        .btns div span {
+            text-align: center;
+            width: 70%;
+            margin: 0 auto;
+            height: 34px;
+            line-height: 34px;
+            border-radius: 17px;
+        }
+
+        .btns div.disagree span {
+            box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.14);
+            color: #666;
+            font-size: 14px;
+        }
+
+        .btns div.agree span {
+            background: rgba(98, 146, 255, 1);
+            color: #fff;
+        }
+
+
+
+        /*购买遮罩层*/
+        .Mask{
+            position:absolute;
+            left:0;
+            right:0;
+            bottom:0;
+            top:0;
+            display:none;
+        }
+
+    </style>
+</head>
+
+<body>
+    <header class="aui-bar aui-bar-nav headFixed">
+        <a class="aui-pull-left" tapmode id="back" onclick="backs()">
+            <span class="aui-iconfont aui-icon-left"></span>返回
+        </a>
+        <div class="aui-title">认购积分</div>
+    </header>
+    <div class="aui-content content">
+        <div class="box">
+            <div>总网剩余F积分</div>
+            <div class="total"><span class='number'>0</span> <span>枚</span></div>
+            <div class="progress">
+                <div class="curPro"></div>
+            </div>
+            <div>当前总积分剩余 <span class='percent'>0</span>%</div>
+        </div>
+        <h2>认购积分</h2>
+        <div class="buyBox">
+            <div class="score" val='200' onclick='handleSwitchClick(this)'>
+                <p>200积分</p>
+                <p>- ￥200 -</p>
+            </div>
+            <div class="score" val='300' onclick='handleSwitchClick(this)'>
+                <p>300积分</p>
+                <p>- ￥300 -</p>
+            </div>
+            <div class="score" val='500' onclick='handleSwitchClick(this)'>
+                <p>500积分</p>
+                <p>- ￥500 -</p>
+            </div>
+            <div class="score" val='1000' onclick='handleSwitchClick(this)'>
+                <p>1000积分</p>
+                <p>- ￥1000 -</p>
+            </div>
+            <div class="score" val='2000' onclick='handleSwitchClick(this)'>
+                <p>2000积分</p>
+                <p>- ￥2000 -</p>
+            </div>
+            <div class="score" val='5000' onclick='handleSwitchClick(this)'>
+                <p>5000积分</p>
+                <p>- ￥5000 -</p>
+            </div>
+        </div>
+        <input type="number" readonly placeholder="购买其他数量请联系平台" id="score" oninput='handleScoreChange(this)'>
+        <!-- <p style="padding-top: 4%;"><span style="color: #f00;margin-right: 4%;">*</span>财富积分系统是芯汇旗下积分流通管理平台，获取的积分可在旗下咨询平台及生活服务平台购买服务或商品优惠。</p> -->
+    </div>
+    <div class="btn-pay">
+        <button id="pay">立即购买</button>
+    </div>
+    <div class="payBox">
+        <div class="title">付款<img class='close' src="../image/close.svg" alt=""></div>
+        <!-- <div class="payway aui-row active" data-payway='alipay' onclick='handlePayClick(this)'>
+            <div class="aui-col-xs-2"><img src="../image/alipay.svg" alt=""></div>
+            <div class="aui-col-xs-8">支付宝支付</div>
+            <div class="aui-col-xs-2"><span></span></div>
+        </div> -->
+        <div class="payway aui-row active" data-payway='wywxpay' onclick='handlePayClick(this)'>
+            <div class="aui-col-xs-2"><img src="../image/wxpay.svg" alt=""></div>
+            <div class="aui-col-xs-8">微信支付</div>
+            <div class="aui-col-xs-2"><span></span></div>
+        </div>
+        <button id="ljPay">立即付款（<span class="total">0</span>元）</button>
+    </div>
+
+    <div class="alertBox">
+        <div class="shadow"></div>
+        <div class="contBox">
+            <div id="title"></div>
+            <div id="cont"></div>
+            <div class="btns aui-row">
+                <div class="disagree aui-col-xs-6"><span>不同意</span></div>
+                <div class="agree aui-col-xs-6"><span>同意</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="Mask"></div>
+
+</body>
+<script type="text/javascript" src="../script/jquery.min.js"></script>
+<script type="text/javascript" src="../script/aui-toast.js"></script>
+<script type="text/javascript" src="../script/common.js"></script>
+<script type="text/javascript">
+
+    /*验证登录*/
+    checklogin();
+    
+    function getQuery(name) {//获取地址栏信息
+        var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) {
+            return unescape(r[2]);
+        }
+        return null;
+      };
+    
+    var percent = 0;
+    var proportion = 0;
+    var surplus_score = 0;
+
+    var openid=localStorage.getItem('xzOpen');
+
+    $('.number').text(surplus_score);
+    $(function(){
+        document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+            WeixinJSBridge.call('hideOptionMenu');
+        });
+
+      //   if(ua.match(/MicroMessenger/i)=="micromessenger"){
+      //       if (!getQuery('code')) {//获取code  snsapi_base 静默 snsapi_userinfo 弹窗
+      //     let authParams = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx9aa3788f0433569c&redirect_uri=${encodeURIComponent(window.location.href)}&response_type=code&scope=snsapi_base#wechat_redirect`;
+      //     window.location.href = authParams
+      //   } else {
+      //     var code = getQuery('code');
+      //     var fd = new FormData();
+      //     fd.append("code", code);
+      //     $.ajax({
+      //           url:"https://xhfwy3.sanhedao.com.cn/public/index.php/uapi/v4/home/getopenid",
+      //           type:'post',
+      //           processData: false,
+      //           contentType: false,
+      //           data:fd,
+      //           success:function(data){
+      //               var data=JSON.parse(data);
+      //               if(Number(data.code)==10000){
+      //                   let dataList=data.data;
+      //                   openid=dataList.openid;
+      //                   console.log(openid,8888)
+      //               }
+      //           }
+      //       })
+      //     }
+      // }
+
+       
+        var amount,total;
+        $.ajax({
+            type:"POST",
+            url:url+Hall_purchase,
+            dataType:'json',
+            async:true,
+            timeout: 0,
+            crossDomain: true,
+            data:{
+                uid: uid,
+                token: token
+            },
+            success:function(ret) {
+                if(ret.code == 10000){
+                    localStorage.setItem('token',ret.token);
+                    token = ret.token;
+                    percent = Number(ret.data.percent);
+                    proportion = Number(ret.data.proportion);
+                    surplus_score = Number(ret.data.surplus_score);
+                    $('.number').text(surplus_score);
+                    $('.percent').text(percent);
+                }else{
+                    //failTip("系统繁忙");
+                }
+            },
+            error:function(err){
+                //failTip("系统繁忙");
+                console.log(err); 
+            }
+        });
+        $('#pay').click(function(){
+            var number = $('#score').val();
+            if (number == '') {
+                failTip('请输入购买积分数量！')
+                return
+            }
+            $.ajax({
+                type:"POST",
+                url:url+User_agreement,
+                dataType:'json',
+                async:true,
+                // timeout: 1000,
+                crossDomain: true,
+                data:{ 
+                    flag: "subscribe",
+                    uid:uid,
+                    token:token,
+                },
+                success:function(ret) {
+                    if (ret.code == 10000) {
+                        $("#title").text(ret.data.title);
+                        $("#cont").html(ret.data.content);
+                        $(".alertBox").slideDown();
+                    } else {
+                        Toast('系统繁忙!');
+                    }
+                },
+                error:function(err){
+                    failTip("系统繁忙");
+                    console.log(err); 
+                }
+            });
+        });
+        $('.agree').click(function(){
+            $(".alertBox").slideUp();
+            $('.payBox').slideDown();
+            $(".Mask").css({'display':'block'})
+            amount = Number($('#score').val());
+            total = amount * proportion;
+            $('.payBox .total').text(total);
+        })
+        $('.disagree').click(function(){
+            $(".alertBox").slideUp();
+        })
+        $('.close').click(function(){
+            $(".payBox").slideUp();
+            $(".Mask").css({'display':'none'})
+        });
+        $("#ljPay").click(function(){
+            $('.payBox').slideDown();
+            var payway;
+            if(ua.match(/MicroMessenger/i)=="micromessenger"){
+                payway="wxpay"
+            }else{
+                payway = $('.payBox .active').attr('data-payway');
+            }
+            // var payway = $('.payBox .active').attr('data-payway');
+            if(payway == "wxpay"){
+                $.ajax({
+                    type:"POST",
+                    url:url+wapbuy,
+                    dataType:'json',
+                    async:true,
+                    timeout: 1000,
+                    crossDomain: true,
+                    data:{ 
+                        uid: uid,
+                        token: token,
+                        amount: amount,
+                        total: total,
+                        payway: payway,
+                        openid:openid
+                    },
+                    success:function(ret) {
+                        // var timestamp = Math.round(new Date().getTime()/1000).toString();
+                        if(ret.code == 10000){
+                            // localStorage.setItem('token',ret.token);
+                            token = ret.token;
+                            var weixinData=JSON.stringify(ret.data);
+                            var weixin= eval("("+weixinData+")");
+                            // alert(weixinData,888)
+                            // return;
+                            var timestamp=weixin.timestamp.toString();
+                            // location.href = ret.data;
+                            function onBridgeReady(){
+                               WeixinJSBridge.invoke(
+                                  'getBrandWCPayRequest', {
+                                     "appId":weixin.appid,     //公众号名称，由商户传入     
+                                     "timeStamp":timestamp,         //时间戳，自1970年以来的秒数     
+                                     "nonceStr":weixin.nonce_str, //随机串     
+                                     "package":"prepay_id="+weixin.prepay_id,     
+                                     "signType":"MD5",         //微信签名方式：     
+                                     "paySign":weixin.sign //微信签名 
+                                  },
+                                  function(res){
+                                  if(res.err_msg == "get_brand_wcpay_request:ok" ){
+                                    window.location.href="https://cfjf.sanhedao.com.cn/";
+                                  // 使用以上方式判断前端返回,微信团队郑重提示：
+                                        //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+                                  } 
+                               }); 
+                            }
+                            if (typeof WeixinJSBridge == "undefined"){
+                               if( document.addEventListener ){
+                                   document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+                               }else if (document.attachEvent){
+                                   document.attachEvent('WeixinJSBridgeReady', onBridgeReady); 
+                                   document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+                               }
+                            }else{
+                               onBridgeReady();
+                            }
+                        }else if(ret.code == 10010){
+                            logDietime();
+                        }else if(ret.code == 10001){
+                            localStorage.setItem('token',ret.token);
+                            token = ret.token;
+                            failTip(ret.msg);
+                        }else{
+                            failTip(ret.msg);
+                        }
+                    },
+                    error:function(err){
+                        failTip("系统繁忙");
+                        console.log(err); 
+                    }
+                });
+            }else if(payway == "wywxpay"){
+                $.ajax({
+                    type:"POST",
+                    url:url+wapbuy,
+                    dataType:'json',
+                    async:true,
+                    timeout: 1000,
+                    crossDomain: true,
+                    data:{ 
+                        uid: uid,
+                        token: token,
+                        amount: amount,
+                        total: total,
+                        payway: payway,
+                        // openid:openid
+                    },
+                    success:function(ret) {
+                        // var timestamp = Math.round(new Date().getTime()/1000).toString();
+                        if(ret.code == 10000){
+                            // localStorage.setItem('token',ret.token);
+                            token = ret.token;
+                            // var weixinData=JSON.stringify(ret.data);
+                            // var weixin= eval("("+weixinData+")");//notify_url  redirect_url
+                            location.href = ret.data+'&redirect_url=https://cfjf.sanhedao.com.cn/';
+                            // function onBridgeReady(){
+                            //    WeixinJSBridge.invoke(
+                            //       'getBrandWCPayRequest', {
+                            //          "appId":weixin.appid,     //公众号名称，由商户传入     
+                            //          "timeStamp":wexin.timeStamp,         //时间戳，自1970年以来的秒数     
+                            //          "nonceStr":weixin.nonce_str, //随机串     
+                            //          "package":"prepay_id="+weixin.prepay_id,     
+                            //          "signType":"MD5",         //微信签名方式：     
+                            //          "paySign":weixin.sign //微信签名 
+                            //       },
+                            //       function(res){
+                            //       if(res.err_msg == "get_brand_wcpay_request:ok" ){
+                            //         alert('成功了')
+                            //         window.location.href="http://www.baidu.com";
+                            //       // 使用以上方式判断前端返回,微信团队郑重提示：
+                            //             //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+                            //       } 
+                            //    }); 
+                            // }
+                            // if (typeof WeixinJSBridge == "undefined"){
+                            //    if( document.addEventListener ){
+                            //        document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+                            //    }else if (document.attachEvent){
+                            //        document.attachEvent('WeixinJSBridgeReady', onBridgeReady); 
+                            //        document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+                            //    }
+                            // }else{
+                            //    onBridgeReady();
+                            // }
+                        }else if(ret.code == 10010){
+                            logDietime();
+                        }else if(ret.code == 10001){
+                            localStorage.setItem('token',ret.token);
+                            token = ret.token;
+                            failTip(ret.msg);
+                        }else{
+
+                            failTip(ret.msg);
+                            // failTip("系统繁忙");
+                        }
+                    },
+                    error:function(err){
+                        failTip("系统繁忙");
+                        console.log(err); 
+                    }
+                });
+            }else{
+                $.ajax({
+                    type:"POST",
+                    url:url+alipay_pay,
+                    dataType:'json',
+                    async:true,
+                    timeout: 1000,
+                    crossDomain: true,
+                    data:{ 
+                        uid: uid,
+                        token: token,
+                        amount:amount,
+                        total:total,
+                    },
+                    success:function(ret) {
+                        console.log(ret);
+                        if(ret.code == 10000){
+                            localStorage.setItem('token',ret.token);
+                            token = ret.token;
+                            var uuid = ret.data;
+                            location.href = "alipay.html?uuid="+uuid;
+                            // $.ajax({
+                            //     type:"POST",
+                            //     url:"https://wpjf.sanhedao.com.cn/alipay/wappay/pay.php",
+                            //     dataType:'json',
+                            //     async:true,
+                            //     timeout: 1000,
+                            //     crossDomain: true,
+                            //     data:{
+                            //         uuid: uuid
+                            //     },
+                            //     success:function(ret) {
+                            //         console.log(ret); 
+                            //         if(ret.code == 10000){
+                                        
+                            //         }else if(ret.code == 10001){
+                            //             failTip(ret.msg);
+                            //         }else if(ret.code == 10002){
+                            //             failTip(ret.msg);
+                            //         }else{
+                            //             failTip("系统繁忙");
+                            //         }
+                            //     },
+                            //     error:function(err){
+                            //         failTip("系统繁忙");
+                            //         console.log(err); 
+                            //     }
+                            // });
+                            
+                        }else if(ret.code == 10001){
+                            failTip(ret.msg);
+                            localStorage.setItem('token',ret.token);
+                            token = ret.token;
+                        }else if(ret.code == 10002){
+                            logDietime();
+                        }else{
+                            failTip("系统繁忙");
+                        }
+                    },
+                    error:function(err){
+                        failTip("系统繁忙");
+                        console.log(err); 
+                    }
+                });
+            }
+            
+        })
+    })
+    
+    function payOrder(data) {
+        var payway = $api.attr($api.dom('.payBox .active'), 'data-payway')
+        if (payway === 'alipay') {
+            var aliPay = api.require('aliPay');
+            aliPay.payOrder({
+                orderInfo: data
+            }, function (ret, err) {
+                if (ret.code == 9000) {
+                    Toast('支付成功！')
+                    api.sendEvent({
+                        name: 'buy',
+                        extra: {
+                            key1: 'buy'
+                        }
+                    });
+                } else if (ret.code == 4000) {
+                    Toast('系统异常')
+                } else if (ret.code == 4001) {
+                    Toast('数据格式不正确')
+                } else if (ret.code == 4003) {
+                    Toast('该用户绑定的支付宝账户被冻结或不允许支付')
+                } else if (ret.code == 4004) {
+                    Toast('该用户已解除绑定')
+                } else if (ret.code == 4005) {
+                    Toast('绑定失败或没有绑定')
+                } else if (ret.code == 4006) {
+                    Toast('订单支付失败')
+                } else if (ret.code == 4010) {
+                    Toast('重新绑定账户')
+                } else if (ret.code == 6000) {
+                    Toast('支付服务正在进行升级操作')
+                } else if (ret.code == 6001) {
+                    Toast('用户中途取消支付操作')
+                } else {
+                    Toast('系统繁忙')
+                }
+            });
+        }
+        if (payway === 'wxpay') {
+            var wxPay = api.require('wxPay');
+            wxPay.payOrder({
+                apiKey: data.appid,
+                orderId: data.prepayid,
+                mchId: data.partnerid,
+                nonceStr: data.noncestr,
+                timeStamp: data.timestamp,
+                package: data.package,
+                sign: data.sign
+            }, function (ret, err) {
+                if (ret.status) {
+                    //支付成功
+                    Toast('支付成功！')
+                    api.sendEvent({
+                        name: 'buy',
+                        extra: {
+                            key1: 'buy'
+                        }
+                    });
+                } else {
+                    console.log(err.code);
+                    Toast('支付失败！')
+                }
+            });
+        }
+    }
+    
+    function handleSwitchClick(_this) {
+        // 清除选中样式
+        $(".buyBox .score").removeClass('active')
+        // 给当前元素添加样式
+        $(_this).addClass('active')
+        // 把值显示在input框
+        $('#score').val( $(_this).attr('val') > surplus_score ? surplus_score : $(_this).attr('val'))
+    }
+    function handleScoreChange(_this) {
+        $('.buyBox .active').removeClass('active')
+        var val = Number($(_this).val())
+        // 验证用户输入不能总F积分
+        if (val > surplus_score) {
+            val = surplus_score;
+        }
+        $(_this).val(val);
+    }
+    function handlePayClick(_this) {
+        $('.payBox .payway').removeClass('active');
+        $(_this).addClass('active');
+    }
+</script>
+
+</html>
