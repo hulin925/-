@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html>
+   <head>
+   <!-- <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0"> -->
+   <meta charset="UTF-8">
+   <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  	<title>个性定制分享</title>
+  	<link rel="stylesheet" type="text/css" href="https://at.alicdn.com/t/font_1385569_pgrvb9sdax.css" />
+    <link rel="stylesheet" type="text/css" href="https:////at.alicdn.com/t/font_1388000_kdoi13tvqe.css" />
+    <!-- 分享 -->
+    <link rel="stylesheet" type="text/css" href="https://at.alicdn.com/t/font_1345679_ygrl8g991df.css" />
+
+    <style>
+        * {
+            moz-user-select: -moz-none;
+            -moz-user-select: none;
+            -o-user-select: none;
+            -khtml-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        html{
+            font-size:16px;
+        }
+        .clearfix{
+            zoom:1;
+        }
+        .clearfix:after{
+            content:'.';
+            display:block;
+            visibility:hidden;
+            height:0;
+            clear:both;
+        }
+        p,li,ul,ol,body{
+            margin:0;
+            padding:0;
+            font-size:100%;
+            font:inherit;
+        }
+
+        ul,li,ol{
+            list-style:none;
+        }
+
+        .jd_banner{
+            width: 100%;
+            height:65vh;
+            overflow: hidden;
+        }
+        .jd_bannerImg{
+            height:100%;
+            /*width:1330px;*/
+            /*position: absolute;  如果使用absolute定位，会造成父容器无法获取由子元素的撑开的高度*/
+            position: relative;
+            /*添加默认偏移*/
+            /*transform: translateX(-10%);*/
+            /*使用定位：使用百分比的时候是参照父容器的宽度*/
+            /* left: -100%;*/
+        }
+        .jd_bannerImg > li{
+            width:80vw;
+            height:100%;
+            /*height:25rem;*/
+            float: left;
+            position:relative;
+            margin-left:20px;
+            background-color: #ccc;
+        }
+        .jd_bannerImg > li:first-child{
+            margin-left:0;
+        }
+        .jd_bannerImg > li span{
+            position:absolute;
+            padding:0 15px;
+            right:10px;
+            bottom:10px;
+            text-align:center;
+            line-height:30px;
+            height:30px;
+            background-color:#fff;
+            border-radius:12px;
+        }
+        .jd_bannerImg > li img{
+            /*1.设置为块元素
+            2.可以将文本的字体大小设置为0
+            3.vertical-align:bottom*/
+            display: block;
+            width: 100%;
+            height:100%;
+        }
+        .codeBox{
+            margin-top:1rem;
+            position:relative;
+
+        }
+        .codeBox .codeLeft{
+            float:left;
+            width:50%;
+            padding-left:10%;
+            padding-top:1rem;
+        }
+        .codeBox .codeLeft p{
+            font-size:1rem;
+            height:1.5rem;
+            line-height:1.5rem;
+        }
+        .codeBox .qrcodeCanvas{
+            width:40%;
+            float:left;
+            font-size:0.8rem;
+            color:#ff6920;
+            text-align:center;
+        }
+        .codeBox img{
+            width:100%;
+            height:100%;
+            position:absolute;
+            left:0;
+            top:0;
+            opacity: 0;
+        }
+        .newElement{
+            /*display:none;*/
+        }
+        .shareActive:active{
+            background: #61b1ff;
+            color:#fff;
+        }
+
+        header{
+            background: #25262B;
+            color:#fff;
+            border-bottom:5px solid #fff;
+            position:relative;
+            padding-top:1rem;
+            height:3rem;
+            line-height:3rem;
+        }
+        header span{
+            padding:0.2rem 1rem;
+            color:#4494FE;
+            font-size:1rem;
+        }
+        .headerCenter{
+            font-size:1.2rem;
+            position:absolute;
+            left:50%;
+            top:1rem;
+            transform: translateX(-50%);
+        }
+
+
+        .loadingMask {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, .8);
+            color: #fff;
+            display:none;
+        }
+        .loadingMask div {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .loadingMask i {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: url("../image/loadingIcon.png") no-repeat;
+            -webkit-background-size: 100% 100%;
+            background-size: 100% 100%;
+            animation: isRotate .5s linear infinite;
+        }
+
+        .loadingMask span {
+            display: block;
+            text-align: center;
+            font-size: 16px;
+            line-height: 2;
+            font-family: "微软雅黑";
+        }
+        @keyframes isRotate{
+            0% {
+                transform: rotate(0deg);
+            }
+            50% {
+                transform: rotate(-180deg);
+            }
+            100% {
+                transform: rotate(-360deg);
+            }
+        }
+
+
+
+
+        /*微信分享*/
+        #wechatSharing{
+            position:fixed;
+            left:0;
+            right:0;
+            top:0;
+            bottom:0;
+            background-color:rgba(0,0,0,.6);
+            z-index:9999999999;
+            display:none;
+        }
+        #wechatSharing p{
+            color:#fff;
+            text-align:center;
+            font-size:1rem;
+            font-family:'楷体' !important;
+            line-height:1.5rem;
+        }
+        #wechatSharing div{
+            padding:1rem 2rem;
+            text-align:right;
+        }
+
+        #wechatSharing .icon-zhishijiantou--{
+            color:#fff;
+            font-size:4rem;
+        }
+
+
+
+
+    </style>
+   </head> 
+<body> 
+    <header class="header">
+        <span onclick="go()"><i class="iconfont icon-back"></i>返回</span>
+        <div class="headerCenter">个性定制分享</div>
+    </header>
+	<div class="jd_banner">
+	    <!--图片-->
+	    <ul class="jd_bannerImg clearfix">
+	        <!-- <li  onclick="share()">
+	            <a href="javascript:;">
+	                <img src="https://web.3fgj.com/imgVue/lawyer.png" alt="">
+	            </a>
+	            <span>分享</span>
+	        </li>
+	        <li>
+	            <a href="javascript:;">
+	                <img src="https://web.3fgj.com/imgVue/cfjfLogo.png" alt="">
+	            </a>
+	            <span>分享132</span>
+	        </li>
+	        <li>
+	            <a href="javascript:;">
+	                <img src="https://web.3fgj.com/imgVue/lawyer.png" alt="">
+	            </a>
+	            <span>分享</span>
+	        </li> -->
+	    </ul>
+	</div>
+
+	<div class="codeBox clearfix">
+		<div class="codeLeft">
+			<p class="userName"></p>
+			<p>推荐码：<span class="recommendation"></span></p>
+		</div>
+		<div class="qrcodeCanvas">
+            <div class="newElement"></div>
+            <div class="join">
+                <p>扫一扫</p>
+                <p>成为合伙人</p>
+            </div>
+        </div>
+        <img src="https://web.3fgj.com/imgVue/cfjfLogo.png" alt="">
+
+	</div>
+
+
+    <div class="loadingMask">
+        <div>
+            <i></i>
+            <span>保存中...</span>
+        </div>
+    </div>
+
+    <div id="wechatSharing">
+        <div>
+            <i class="iconfont icon-zhishijiantou--"></i>
+        </div>
+        <p>请点击右上角</p>
+        <p>将它发送给指定朋友</p>
+        <p>或分享到朋友圈</p>
+    </div>
+
+</body>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="https://cfjf.sanhedao.com.cn/Public/Admin/script/jquery.qrcode.js"></script>
+    <script type="text/javascript" src="https://cfjf.sanhedao.com.cn/Public/Admin/script/utf.js"></script>
+    <script src="https://unpkg.com/better-scroll@1.0.1/dist/bscroll.min.js"></script>
+    <!-- <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.3.2.js"></script> -->
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+
+	<script>
+        function bodyScroll(event){  
+            event.preventDefault();  
+        } 
+
+        //分享信息
+        var username = localStorage.getItem('name');
+        var uid = localStorage.getItem('uid');
+        $('.userName').text(username);
+        $('.recommendation').text('CFJF'+uid);
+
+
+
+
+
+        var ua = navigator.userAgent.toLowerCase();//获取判断用的对象
+        if (ua.match(/MicroMessenger/i) == "micromessenger") {//在微信中打开
+          $('.header').css({'paddingTop':0});
+          $('.headerCenter').css({'top':0})
+        }
+
+
+        $('.loadingMask').css({'display':'block'})
+
+        $(function(){
+            document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {//禁用自己分享
+                WeixinJSBridge.call('hideOptionMenu');
+            });
+            $.ajax({
+                type:'POST',
+                url:'https://cfjf.sanhedao.com.cn/Api/Index/index/do/Home/ac/getshareimg',
+                success:function(res){
+                    var list=res.data;
+                    list.forEach((item,index)=>{
+                        var content=`
+                        <li class="lists">
+                            <a href="javascript:;">
+                                <img src="${item}" alt="">
+                            </a>
+                            <span class="shareActive" onclick="share('${item}')"><i class="iconfont icon-fenxiang"></i> 分享</span>
+                        </li>`;
+
+                        $(".jd_bannerImg").append(content);
+                    })
+                    var imgWidth=$('.lists').width()
+                    var newWidth=imgWidth*list.length+20*(list.length-1);
+                    $(".jd_bannerImg").width(newWidth);
+
+                    let scrolls = new BScroll('.jd_banner', {
+                      startX: 0,
+                      click: true,
+                      scrollX: true,
+                      scrollY: false,
+                      eventPassthrough: 'vertical'
+                    });
+                    $('.loadingMask').css({'display':'none'})
+                }  
+            })
+
+
+                // $(document).ready(function() {
+            $(".newElement").qrcode({
+                render : "canvas",    //设置渲染方式，有table和canvas，使用canvas方式渲染性能相对来说比较好
+                text : 'https://cfjf.sanhedao.com.cn/Public/Admin/html/sharePage.html?fxUid='+uid+'&name='+username,    //扫描二维码后显示的内容,可以直接填一个网址，扫描二维码后自动跳向该链接
+                width : "80",               //二维码的宽度
+                height : "80",              //二维码的高度
+                background : "#ffffff",       //二维码的后景色
+                foreground : "#000000",        //二维码的前景色
+                src: 'https://cfjf.sanhedao.com.cn/Public/Admin/image/cfjfLogo.png'             //二维码中间的图片 https://web.3fgj.com/imgVue/cfjfLogo.png
+            });
+        // });
+
+
+
+        })
+
+
+
+            function share(index){//分享跳转
+
+                var imgData=index;//当前图片
+
+                var data={
+                    url:'https://cfjf.sanhedao.com.cn/Public/Admin/html/sharePage.html?name='+username+'&imgUrl='+imgData+'&fxUid=',
+                    describe:'F积分是芯汇合伙人区块链价值体系中的度量标准，通过推广等不同的方式，发放给合伙人。在持有F积分的期间合伙人将会获得芯汇区块链价值体系所产生的增值收益。',
+                    title:'合伙人积分',
+                    img:'https://web.3fgj.com/imgVue/cfjfLogo.png'
+                }
+
+             var ua = navigator.userAgent.toLowerCase();//获取判断用的对象
+             if (ua.match(/MicroMessenger/i) == "micromessenger") {//在微信中打开
+                  WeixinJSBridge.call('showOptionMenu');//显示微信分享
+
+                  $('#wechatSharing').css({'display':'block'});
+                  document.body.addEventListener('touchmove',bodyScroll,false);
+                  $('body').css({'position':'fixed',"width":"100%"}); 
+                  // document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+                 //        WeixinJSBridge.call('hideOptionMenu');
+                 //    });
+
+                  var selfUrl=window.location.href;
+                  $.ajax({
+                    type:'POST',
+                    url:'https://xhfwy3.sanhedao.com.cn/public/index.php/uapi/v4/home/sharesign',
+                    data:{
+                      url:selfUrl
+                    },
+                    success:function(ret){
+                      var weixinData=JSON.parse(ret);
+                //              var weixin= eval("("+weixinData+")");
+                      if(Number(weixinData.code)==10000){
+                        var nowData=weixinData.message;
+                        wx.config({
+                          debug:false,// 是否开启调试模式
+                          appId:nowData.appId,//appid
+                          timestamp:nowData.timestamp,// 时间戳
+                          nonceStr:nowData.nonceStr,// 随机字符串
+                          signature:nowData.signature,// 签名
+                          jsApiList:[
+                           'onMenuShareAppMessage',
+                           'onMenuShareTimeline',
+                           'hideMenuItems'
+                          ]// 需要使用的JS接口列表 
+                         })
+
+                      wx.ready(function(){
+                        wx.hideMenuItems({//微信隐藏项
+                          menuList: ['menuItem:share:qq',"menuItem:share:QZone","menuItem:copyUrl","menuItem:openWithQQBrowser","menuItem:openWithSafari","menuItem:favorite"] // 要隐藏的菜单项，只能隐藏“传播类”和“保护类”按钮，所有menu项见附录3
+                        });
+                        
+                          //分享给朋友
+                          wx.onMenuShareAppMessage({
+                            title: '合伙人积分',// 分享标题
+                            desc: 'F积分是芯汇合伙人区块链价值体系中的度量标准，通过推广等不同的方式，发放给合伙人。在持有F积分的期间合伙人将会获得芯汇区块链价值体系所产生的增值收益。',// 分享描述
+                            link: 'https://cfjf.sanhedao.com.cn/Public/Admin/html/sharePage.html?fxUid='+uid+'&imgUrl='+imgData+'&name='+encodeURI(username),// 分享链接
+                            imgUrl: 'https://web.3fgj.com/imgVue/cfjfLogo.png',// 分享图标
+                            type: 'link',// 分享类型,music、video或link，不填默认为link
+                            dataUrl: '',// 如果type是music或video，则要提供数据链接，默认为空
+                            success: function () {
+                              WeixinJSBridge.call('hideOptionMenu');//隐藏微信分享
+                              $('#wechatSharing').css({'display':'none'})//隐藏分享背景
+                              document.body.addEventListener('touchmove',bodyScroll,false);
+                              $('body').css({'position':'initial',"height":"auto"}); 
+
+                            }, cancel: function () {
+
+                            }
+                          });
+
+                          // 分享到朋友圈
+                          wx.onMenuShareTimeline({
+                            title:'合伙人积分',// 分享标题
+                            link:'https://cfjf.sanhedao.com.cn/Public/Admin/html/sharePage.html?fxUid='+uid+'&imgUrl='+imgData+'&name='+encodeURI(username),// 分享链接
+                            imgUrl:'https://web.3fgj.com/imgVue/cfjfLogo.png',// 分享图标https://huodong.quanzhuejia.com/h5_share_03.jpg
+                            success:function(){
+                              WeixinJSBridge.call('hideOptionMenu');//隐藏微信分享
+                              $('#wechatSharing').css({'display':'none'})//隐藏分享背景
+                              document.body.addEventListener('touchmove',bodyScroll,false);
+                              $('body').css({'position':'initial',"height":"auto"}); 
+                            },
+                            cancel:function(){
+
+                            }
+                          })
+
+                        });
+                        wx.error(function(res){
+                          // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+                        });
+                      }else{
+
+                      }
+                    }
+                  })
+
+                }else{
+                  if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+                    // Ios
+                    window.webkit.messageHandlers.share.postMessage(data);
+                  } else if (/(Android)/i.test(navigator.userAgent)) {
+                    // Android终端
+                    window.AndroidMethod.share(JSON.stringify(data));//android方法
+                  }
+                }
+             // if (ua.match(/MicroMessenger/i) == "micromessenger") {//在微信中打开
+             //    WeixinJSBridge.call('showOptionMenu');//显示微信分享
+
+             //     $('#wechatSharing').css({'display':'block'});
+             //     document.body.addEventListener('touchmove',bodyScroll,false);
+             //     $('body').css({'position':'fixed',"width":"100%"}); 
+             //     var selfUrl=window.location.href;
+             //     $.ajax({
+             //         type:'POST',
+             //         url:'https://xhfwy3.sanhedao.com.cn/public/index.php/uapi/v4/home/sharesign',
+             //         data:{
+             //             url:selfUrl  
+             //         },
+             //         success:function(ret){
+             //             var weixinData=JSON.parse(ret);
+             //             if(Number(weixinData.code)==10000){
+             //                 var nowData=weixinData.message;
+             //                 wx.config({
+             //                     debug:false,// 是否开启调试模式
+             //                     appId:nowData.appId,//appid
+             //                     timestamp:nowData.timestamp,// 时间戳
+             //                     nonceStr:nowData.nonceStr,// 随机字符串
+             //                     signature:nowData.signature,// 签名
+             //                     jsApiList:[
+             //                      'onMenuShareAppMessage',
+             //                      'onMenuShareTimeline',
+             //                      'hideMenuItems'
+             //                     ]// 需要使用的JS接口列表 
+             //                  })
+
+             //             wx.ready(function(){
+             //                 wx.hideMenuItems({//微信隐藏项
+             //                     menuList: ['menuItem:share:qq',"menuItem:share:QZone","menuItem:copyUrl","menuItem:openWithQQBrowser","menuItem:openWithSafari","menuItem:favorite"] // 要隐藏的菜单项，只能隐藏“传播类”和“保护类”按钮，所有menu项见附录3
+             //                 });
+        
+             //                     //分享给朋友
+             //                     wx.onMenuShareAppMessage({
+             //                         title: '合伙人积分',
+             //                         desc: 'F积分是芯汇合伙人区块链价值体系中的度量标准，通过推广等不同的方式，发放给合伙人。在持有F积分的期间合伙人将会获得芯汇区块链价值体系所产生的增值收益。',
+             //                         link: 'https://cfjf.sanhedao.com.cn/Public/Admin/html/sharePage.html?fxUid='+uid+'&imgUrl='+imgData+'&name='+username,
+             //                         imgUrl: 'https://web.3fgj.com/imgVue/cfjfLogo.png',
+             //                         type: 'link',
+             //                         dataUrl: 'https://cfjf.sanhedao.com.cn/Public/Admin/html/sharePage.html?fxUid='+uid+'&imgUrl='+imgData+'&name='+username,
+             //                         success: function () {
+             //                             WeixinJSBridge.call('hideOptionMenu');//隐藏微信分享
+             //                             $('#wechatSharing').css({'display':'none'})//隐藏分享背景
+             //                             document.body.addEventListener('touchmove',bodyScroll,false);
+             //                             $('body').css({'position':'initial',"height":"auto"}); 
+
+             //                         }, cancel: function () {
+
+             //                         }
+             //                     });
+
+             //                     // 分享到朋友圈
+             //                     wx.onMenuShareTimeline({
+             //                         title:'合伙人积分',// 分享标题
+             //                         link:'https://cfjf.sanhedao.com.cn/Public/Admin/html/sharePage.html?fxUid='+uid+'&name='+username+'&imgUrl='+imgData,// 分享链接
+             //                         imgUrl:'https://web.3fgj.com/imgVue/cfjfLogo.png',// 分享图标https://huodong.quanzhuejia.com/h5_share_03.jpg
+             //                         success:function(){
+             //                             WeixinJSBridge.call('hideOptionMenu');//隐藏微信分享
+             //                             $('#wechatSharing').css({'display':'none'})//隐藏分享背景
+             //                             document.body.addEventListener('touchmove',bodyScroll,false);
+             //                             $('body').css({'position':'initial',"height":"auto"}); 
+             //                         },
+             //                         cancel:function(){
+
+             //                         }
+             //                     })
+
+             //                 });
+             //                 wx.error(function(res){
+             //                     // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+             //                 });
+             //             }else{
+
+             //             }
+             //         }
+             //     })
+
+             //     }else{
+
+             //        if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+             //          // Ios
+             //          window.webkit.messageHandlers.share.postMessage(data);
+             //        } else if (/(Android)/i.test(navigator.userAgent)) {
+             //          //Android终端
+             //          window.AndroidMethod.share(JSON.stringify(data));//android方法
+             //        }
+             //    }
+            
+           
+            }
+
+
+            function go(){//返回
+                window.history.go(-1);
+            }
+        
+
+        
+
+
+        //从 canvas 提取图片 image 
+        // function convertCanvasToImage(canvas) { 
+        // //新Image对象，可以理解为DOM 
+        // var image = new Image(); 
+        // // canvas.toDataURL 返回的是一串Base64编码的URL，当然,浏览器自己肯定支持 
+        // // 指定格式 PNG 
+        // image.src = canvas.toDataURL("image/png"); 
+        // return image; 
+        // } 
+        // //获取网页中的canvas对象 
+        // var mycanvas1=document.getElementsByTagName('canvas')[0]; 
+        // //将转换后的img标签插入到html中 
+        // var img=convertCanvasToImage(mycanvas1); 
+        // $('.qrcodeCanvas').append(img);//imagQrDiv表示你要插入的容器id
+
+
+		
+
+
+	</script>
+
+
+</html>
