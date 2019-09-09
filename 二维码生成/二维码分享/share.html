@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+   <head>
+   <!-- <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0"> -->
+   <meta charset="UTF-8">
+   <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  	<title>财富积分个性化分享</title>
+  	<link rel="stylesheet" type="text/css" href="https://at.alicdn.com/t/font_1385569_pgrvb9sdax.css" />
+   </head> 
+			
+	<style>
+        * {
+            moz-user-select: -moz-none;
+            -moz-user-select: none;
+            -o-user-select: none;
+            -khtml-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+		html{
+			font-size:16px;
+		}
+		.clearfix{
+			zoom:1;
+		}
+		.clearfix:after{
+			content:'.';
+			display:block;
+			visibility:hidden;
+			height:0;
+			clear:both;
+		}
+		p,li,ul,ol{
+			margin:0;
+			padding:0;
+			font-size:100%;
+			font:inherit;
+		}
+
+		ul,li,ol{
+			list-style:none;
+		}
+
+		.jd_banner{
+            width: 100%;
+            overflow: hidden;
+        }
+        .jd_bannerImg{
+            /*width:1330px;*/
+            /*position: absolute;  如果使用absolute定位，会造成父容器无法获取由子元素的撑开的高度*/
+            position: relative;
+            /*添加默认偏移*/
+            /*transform: translateX(-10%);*/
+            /*使用定位：使用百分比的时候是参照父容器的宽度*/
+            /* left: -100%;*/
+        }
+        .jd_bannerImg > li{
+            width:250px;
+            height:25rem;
+            float: left;
+            position:relative;
+            margin-left:20px;
+        }
+        .jd_bannerImg > li:first-child{
+        	margin-left:0;
+        }
+        .jd_bannerImg > li span{
+            position:absolute;
+            padding:0 15px;
+            right:10px;
+            bottom:10px;
+            text-align:center;
+            line-height:30px;
+            height:30px;
+            background-color:#fff;
+            border-radius:12px;
+        }
+        .jd_bannerImg > li img{
+            /*1.设置为块元素
+            2.可以将文本的字体大小设置为0
+            3.vertical-align:bottom*/
+            display: block;
+            width: 100%;
+            height:100%;
+        }
+        .codeBox{
+        	margin-top:1rem;
+            position:relative;
+
+        }
+        .codeBox .codeLeft{
+        	float:left;
+        	width:50%;
+        	padding-left:3rem;
+            padding-top:1rem;
+        }
+        .codeBox .codeLeft p{
+        	font-size:1rem;
+        	height:1.5rem;
+        	line-height:1.5rem;
+        }
+        .codeBox .qrcodeCanvas{
+        	float:left;
+        }
+        .codeBox img{
+            width:100%;
+            height:100%;
+            position:absolute;
+            left:0;
+            top:0;
+            opacity: 0;
+        }
+        .newElement{
+            /*display:none;*/
+        }
+
+	</style>
+<body> 
+	<div class="jd_banner">
+	    <!--图片-->
+	    <ul class="jd_bannerImg clearfix">
+	        <!-- <li  onclick="share()">
+	            <a href="javascript:;">
+	                <img src="https://web.3fgj.com/imgVue/lawyer.png" alt="">
+	            </a>
+	            <span>分享</span>
+	        </li>
+	        <li>
+	            <a href="javascript:;">
+	                <img src="https://web.3fgj.com/imgVue/cfjfLogo.png" alt="">
+	            </a>
+	            <span>分享132</span>
+	        </li>
+	        <li>
+	            <a href="javascript:;">
+	                <img src="https://web.3fgj.com/imgVue/lawyer.png" alt="">
+	            </a>
+	            <span>分享</span>
+	        </li> -->
+	    </ul>
+	</div>
+
+	<div class="codeBox clearfix">
+		<div class="codeLeft">
+			<p>李淑梅</p>
+			<p>推荐码：<span>cfjf8888</span></p>
+		</div>
+		<div class="qrcodeCanvas">
+            <div class="newElement"></div>
+        </div>
+        <img src="https://web.3fgj.com/imgVue/cfjfLogo.png" alt="">
+
+	</div>
+
+</body>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://unpkg.com/better-scroll@1.0.1/dist/bscroll.min.js"></script>
+	<!-- <script type="text/javascript" src="./jquery.qrcode.min.js"></script> -->
+    <script type="text/javascript" src="./jquery.qrcode.js"></script>
+    <script type="text/javascript" src="./utf.js"></script>
+	<script>
+
+        $.ajax({
+            type:'POST',
+            url:'https://cfjf.sanhedao.com.cn/Api/Index/index/do/Home/ac/getshareimg',
+            success:function(res){
+                var list=res.data;
+                list.forEach((item,index)=>{
+                    var content=`
+                    <li class="lists">
+                        <a href="javascript:;">
+                            <img src="${item}" alt="">
+                        </a>
+                        <span  onclick="share('${item}')"><i class="iconfont icon-fenxiang"></i> 分享</span>
+                    </li>`;
+
+                    $(".jd_bannerImg").append(content);
+                })
+                var imgWidth=$('.lists').width()
+                var newWidth=imgWidth*list.length+20*(list.length-1);
+                $(".jd_bannerImg").width(newWidth);
+                let scrolls = new BScroll('.jd_banner', {
+                  startX: 0,
+                  click: true,
+                  scrollX: true,
+                  scrollY: false,
+                  eventPassthrough: 'vertical'
+                });
+            }  
+        })
+
+		function share(index){
+            var data={};
+            data.img=index;
+            console.log(data)
+            if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+                  //Ios
+                  window.webkit.messageHandlers.shareData.postMessage(data);
+                } else if (/(Android)/i.test(navigator.userAgent)) {
+                  //Android终端
+                  window.AndroidMethod.shareData(JSON.stringify(data));//android方法
+                }
+		}
+
+
+
+
+		// $(document).ready(function() {
+        $(".newElement").qrcode({
+            render : "canvas",    //设置渲染方式，有table和canvas，使用canvas方式渲染性能相对来说比较好
+            text : "http://www.baidu.com",    //扫描二维码后显示的内容,可以直接填一个网址，扫描二维码后自动跳向该链接
+            width : "80",               //二维码的宽度
+            height : "80",              //二维码的高度
+            background : "#ffffff",       //二维码的后景色
+            foreground : "#000000",        //二维码的前景色
+            src: 'https://web.3fgj.com/imgVue/cfjfLogo.png'             //二维码中间的图片 https://web.3fgj.com/imgVue/cfjfLogo.png
+        });
+    // });
+
+
+        //从 canvas 提取图片 image 
+        // function convertCanvasToImage(canvas) { 
+        // //新Image对象，可以理解为DOM 
+        // var image = new Image(); 
+        // // canvas.toDataURL 返回的是一串Base64编码的URL，当然,浏览器自己肯定支持 
+        // // 指定格式 PNG 
+        // image.src = canvas.toDataURL("image/png"); 
+        // return image; 
+        // } 
+        // //获取网页中的canvas对象 
+        // var mycanvas1=document.getElementsByTagName('canvas')[0]; 
+        // //将转换后的img标签插入到html中 
+        // var img=convertCanvasToImage(mycanvas1); 
+        // $('.qrcodeCanvas').append(img);//imagQrDiv表示你要插入的容器id
+
+
+		
+
+
+	</script>
+
+
+</html>

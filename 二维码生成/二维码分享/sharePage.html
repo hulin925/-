@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+   <head>
+   <!-- <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0"> -->
+   <meta charset="UTF-8">
+   <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  	<title>财富积分</title>
+  	<link rel="stylesheet" type="text/css" href="https://at.alicdn.com/t/font_1385569_pgrvb9sdax.css" />
+   </head> 
+			
+	<style>
+		html{
+			font-size:16px;
+		}
+		.clearfix{
+			zoom:1;
+		}
+		.clearfix:after{
+			content:'.';
+			display:block;
+			visibility:hidden;
+			height:0;
+			clear:both;
+		}
+		p,li,ul,ol{
+			margin:0;
+			padding:0;
+			font-size:100%;
+			font:inherit;
+		}
+
+		ul,li,ol{
+			list-style:none;
+		}
+
+		.jd_banner{
+            width: 100%;
+            height:25rem;
+            overflow: hidden;
+        }
+        .jd_banner img{
+            width:100%;
+            height:100%;
+        }
+
+
+        .codeBox{
+        	margin-top:1rem;
+            position:relative;
+        }
+        .codeBox .codeLeft{
+        	float:left;
+        	width:50%;
+        	padding-left:3rem;
+            padding-top:1rem;
+        }
+        .codeBox .codeLeft p{
+        	font-size:1rem;
+        	height:1.5rem;
+        	line-height:1.5rem;
+        }
+        .codeBox .qrcodeCanvas{
+        	float:left;
+        }
+        .codeBox img{
+            position:absolute;
+            left:0;
+            right:0;
+            width:100%;
+            height:100%;
+            opacity:0;
+        }
+
+	</style>
+<body> 
+	<div class="jd_banner">
+        <img src="http://cfjfht.sanhedao.com.cn/Upload/images/5d6f4f8fc3a13.jpeg" alt="">
+	</div>
+
+	<div class="codeBox clearfix">
+		<div class="codeLeft">
+			<p>李淑梅</p>
+			<p>推荐码：<span>cfjf8888</span></p>
+		</div>
+        <div class="qrcodeCanvas">
+            <div class="newElement"></div>
+        </div>
+
+        <img src="https://web.3fgj.com/imgVue/cfjfLogo.png" alt="">
+
+	</div>
+
+</body>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://unpkg.com/better-scroll@1.0.1/dist/bscroll.min.js"></script>
+	<!-- <script type="text/javascript" src="./jquery.qrcode.min.js"></script> -->
+    <script type="text/javascript" src="./jquery.qrcode.js"></script>
+    <script type="text/javascript" src="./utf.js"></script>
+	<script>
+
+
+		$(document).ready(function() {
+        $(".newElement").qrcode({
+            render : "canvas",    //设置渲染方式，有table和canvas，使用canvas方式渲染性能相对来说比较好
+            text : "http://www.baidu.com",    //扫描二维码后显示的内容,可以直接填一个网址，扫描二维码后自动跳向该链接
+            width : "80",               //二维码的宽度
+            height : "80",              //二维码的高度
+            background : "#ffffff",       //二维码的后景色
+            foreground : "#000000",        //二维码的前景色
+            src: 'https://web.3fgj.com/imgVue/cfjfLogo.png'             //二维码中间的图片
+        });
+    });
+
+		
+
+
+	</script>
+
+
+</html>
