@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+   <head>
+   <!-- <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0"> -->
+   <meta charset="UTF-8">
+   <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+  	<title>财富积分</title>
+  	<link rel="stylesheet" type="text/css" href="https://at.alicdn.com/t/font_1385569_pgrvb9sdax.css" />
+
+    <style>
+        html{
+            font-size:16px;
+        }
+        .clearfix{
+            zoom:1;
+        }
+        .clearfix:after{
+            content:'.';
+            display:block;
+            visibility:hidden;
+            height:0;
+            clear:both;
+        }
+        p,li,ul,ol,body{
+            margin:0;
+            padding:0;
+            font-size:100%;
+            font:inherit;
+        }
+
+        ul,li,ol{
+            list-style:none;
+        }
+
+        .jd_banner{
+            width: 100%;
+            height:75vh;
+            overflow: hidden;
+        }
+        .jd_banner img{
+            width:100%;
+            height:100%;
+        }
+
+
+        .codeBox{
+            margin-top:1rem;
+            position:relative;
+        }
+        .codeBox .codeLeft{
+            float:left;
+            width:50%;
+            padding-left:10%;
+            padding-top:1rem;
+            overflow: hidden;
+        }
+        .codeBox .codeLeft p{
+            font-size:1rem;
+            height:1.5rem;
+            line-height:1.5rem;
+        }
+        .codeBox .qrcodeCanvas{
+            width:40%;
+            float:left;
+            font-size:0.8rem;
+            color:#ff6920;
+            text-align:center;
+        }
+        /*.codeBox img{
+            position:absolute;
+            left:0;
+            right:0;
+            width:100%;
+            height:100%;
+            opacity:0;
+        }*/
+        .newElement{
+            position:relative;
+            z-index:99999;
+        }
+
+    </style>
+   </head> 
+<body> 
+	<div class="jd_banner">
+        <img src="https://cfjfht.sanhedao.com.cn/Upload/images/5d78ae1dcb40a.png" alt="" id="logo">
+	</div>
+
+	<div class="codeBox clearfix">
+		<div class="codeLeft">
+			<p class="userName"></p>
+            <p>推荐码：<span class="recommendation"></span></p>
+		</div>
+        <div class="qrcodeCanvas">
+            <div class="newElement"></div>
+            <img src="" id="qrcodeImg"/><br>
+            <div class="join">
+                <p>扫一扫</p>
+                <p>成为合伙人</p>
+            </div>
+            
+        </div>
+
+        <!-- <img src="https://web.3fgj.com/imgVue/cfjfLogo.png" alt=""> -->
+
+	</div>
+
+</body>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://unpkg.com/better-scroll@1.0.1/dist/bscroll.min.js"></script>
+	<!-- <script type="text/javascript" src="./jquery.qrcode.min.js"></script> -->
+    <!-- <script type="text/javascript" src="./jquery.qrcode.js"></script> -->
+    <script type="text/javascript" src="https://cfjf.sanhedao.com.cn/Public/Admin/script/jquery.qrcode.js"></script>
+    <script type="text/javascript" src="https://cfjf.sanhedao.com.cn/Public/Admin/script/utf.js"></script>
+	<script>
+
+        // function getQuery(name) {//获取地址栏信息
+        //     var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+        //     var r = window.location.search.substr(1).match(reg);
+        //     if (r != null) {
+        //         return unescape(r[2]);
+        //     }
+        //     return null;
+        //   };
+
+          function getUrlParam(key) {
+            // 获取参数
+            var url = window.location.search;
+            // 正则筛选地址栏
+            var reg = new RegExp("(^|&)" + key + "=([^&]*)(&|$)");
+            // 匹配目标参数
+            var result = url.substr(1).match(reg);
+            //返回参数值
+            return result ? decodeURIComponent(result[2]) : null;
+        }
+
+        //分享信息
+        var name = getUrlParam('name');
+        var uid = getUrlParam('fxUid');
+        var imgData=getUrlParam('imgUrl');
+
+        $('.userName').text(name);
+        $('.recommendation').text('CFJF'+uid);
+        if(imgData){
+            $("#logo").attr('src',imgData);
+        }
+
+		$(document).ready(function() {
+        $(".newElement").qrcode({
+            render : "canvas",    //设置渲染方式，有table和canvas，使用canvas方式渲染性能相对来说比较好
+            text : "http://web.sanhedao.com.cn/integralshare.html?fxUid="+uid,    //扫描二维码后显示的内容,可以直接填一个网址，扫描二维码后自动跳向该链接
+            width : "80",               //二维码的宽度
+            height : "80",              //二维码的高度
+            background : "#ffffff",       //二维码的后景色
+            foreground : "#000000",        //二维码的前景色
+            src: 'https://cfjf.sanhedao.com.cn/Public/Admin/image/cfjfLogo.png'             //二维码中间的图片
+        }).hide();
+        //将生成的二维码转换成图片格式
+            $("canvas").attr("id","erw");
+            var canvas = document.getElementById('erw');
+            var context = canvas.getContext('2d'); 
+            var image = new Image();
+            var strDataURI =canvas.toDataURL("image/png");     
+              document.getElementById('qrcodeImg').src = strDataURI;
+
+            // var canvas = qrcode.find('canvas').get(0);
+            // $('#qrcodeImg').attr('src', canvas.toDataURL('image/jpg'));
+    });
+
+        // // 从 canvas 提取图片 image 
+        // function convertCanvasToImage(canvas) { 
+        // //新Image对象，可以理解为DOM 
+        // var image = new Image(); 
+        // // canvas.toDataURL 返回的是一串Base64编码的URL，当然,浏览器自己肯定支持 
+        // // 指定格式 PNG 
+        // image.src = canvas.toDataURL("image/png"); 
+        // return image; 
+        // } 
+        // //获取网页中的canvas对象 
+        // var mycanvas1=document.getElementsByTagName('canvas')[0]; 
+        // //将转换后的img标签插入到html中 
+        // var img=convertCanvasToImage(mycanvas1); 
+        // $('.qrcodeCanvas').append(img);//imagQrDiv表示你要插入的容器id
+
+
+		
+
+
+	</script>
+
+
+</html>

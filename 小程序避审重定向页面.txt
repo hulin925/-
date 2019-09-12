@@ -1,0 +1,7 @@
+
+      var id = 0;
+      if (id == 1) {
+        wx.reLaunch({
+          url: '/pages/index/index'
+        })
+      }
